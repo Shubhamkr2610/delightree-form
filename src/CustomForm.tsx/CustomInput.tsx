@@ -1,4 +1,5 @@
 import {
+  Button,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -6,19 +7,30 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
+  Spacer,
+  Stack,
   Text,
 } from "@chakra-ui/react";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { inputStyles, genderOptions } from "../constants";
 import { Select } from "chakra-react-select";
+import { AddIcon, CloseIcon } from "@chakra-ui/icons";
+interface selectGenderRef {
+  value: string;
+  label: string;
+}
 
 const CustomInput = forwardRef((_, ref) => {
-  const [isError, setIsError] = useState({});
-  const firstName = useRef(null);
-  const lastName = useRef(null);
-  const email = useRef(null);
-  const phone = useRef(null);
-  const dateOfBirth = useRef(null);
+  const [isError, setIsError] = useState<any>({});
+  const firstName = useRef<HTMLInputElement>(null);
+  const lastName = useRef<HTMLInputElement>(null);
+  const email = useRef<HTMLInputElement>(null);
+  const phone = useRef<HTMLInputElement>(null);
+  const dateOfBirth = useRef<HTMLInputElement>(null);
+  const genderRef = useRef<any>(null);
+  const techStackRefs = useRef<HTMLInputElement[]>([]);
+  const [fields, setFields] = useState([{ id: 0, isDeletable: false }]);
   useImperativeHandle(
     ref,
     () => {
@@ -29,24 +41,40 @@ const CustomInput = forwardRef((_, ref) => {
             lastName: lastName?.current?.value,
             email: email?.current?.value,
             phone: phone?.current?.value,
-            dateOfBirth: dateOfBirth?.current?.value
+            dateOfBirth: dateOfBirth?.current?.value,
+            gender: genderRef?.current?.value,
+            techStacks: techStackRefs.current?.map((item) => item.value),
           };
         },
         setError: (type: any, errorMsg: any) => {
-          setIsError((prev) => ({ ...prev, [type]: errorMsg }));
+          setIsError((prev: any) => ({ ...prev, [type]: errorMsg }));
         },
       };
     },
     []
   );
   const changeHandler = (e: any) => {
-    setIsError((prev) => ({ ...prev, [e.target.name]: "" }));
+    setIsError((prev: any) => ({ ...prev, [e.target.name]: "" }));
   };
 
+  const appendInput = () => {
+    setFields((prev) => [
+      ...prev,
+      { id: prev[prev?.length - 1]?.id + 1, isDeletable: true },
+    ]);
+  };
+  const removeInput = (index: number) => {
+    techStackRefs.current.splice(index, 1);
+    setFields((prevFields) => {
+      const updatedFields = [...prevFields];
+      updatedFields.splice(index, 1);
+      return updatedFields;
+    });
+  };
   return (
     <>
       <Flex gap="6">
-        <FormControl isInvalid={isError?.firstName}>
+        <FormControl isInvalid={!!isError?.firstName}>
           <FormLabel>First Name</FormLabel>
           <Input
             name="firstName"
@@ -59,7 +87,7 @@ const CustomInput = forwardRef((_, ref) => {
             {isError?.firstName && isError?.firstName}
           </FormErrorMessage>
         </FormControl>
-        <FormControl isInvalid={isError?.lastName}>
+        <FormControl isInvalid={!!isError?.lastName}>
           <FormLabel>Last Name</FormLabel>
           <Input
             name="lastName"
@@ -74,7 +102,7 @@ const CustomInput = forwardRef((_, ref) => {
         </FormControl>
       </Flex>
       <Flex gap="6">
-        <FormControl isInvalid={isError?.phone}>
+        <FormControl isInvalid={!!isError?.phone}>
           <FormLabel>Mobile Number</FormLabel>
           <InputGroup>
             <InputLeftElement
@@ -99,7 +127,7 @@ const CustomInput = forwardRef((_, ref) => {
           </FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={isError?.email}>
+        <FormControl isInvalid={!!isError?.email}>
           <FormLabel>Email</FormLabel>
           <Input
             type="email"
@@ -118,20 +146,29 @@ const CustomInput = forwardRef((_, ref) => {
         Other information
       </Text>
       <Flex gap="6">
-        <FormControl>
+        <FormControl isInvalid={!!isError?.gender}>
           <FormLabel>Gender</FormLabel>
           <Select
+            ref={genderRef}
             name="gender"
+            onChange={(value: selectGenderRef) => {
+              setIsError((prev: any) => ({ ...prev, gender: "" }));
+              genderRef.current = value;
+            }}
             options={genderOptions}
-            placeholder="Select some colors..."
+            placeholder="Select Gender"
+            {...inputStyles}
           />
+          <FormErrorMessage>
+            {isError?.gender && isError?.gender}
+          </FormErrorMessage>
         </FormControl>
-        <FormControl isInvalid={isError?.dateOfBirth}>
+        <FormControl isInvalid={!!isError?.dateOfBirth}>
           <FormLabel htmlFor="birthday">Date of Birth</FormLabel>
           <input
             type="date"
             name="dateOfBirth"
-
+            onChange={changeHandler}
             ref={dateOfBirth}
             style={{
               width: "100%",
@@ -149,6 +186,54 @@ const CustomInput = forwardRef((_, ref) => {
           </FormErrorMessage>
         </FormControl>
       </Flex>
+      <Stack spacing="3" w="50%" paddingRight="3" marginBottom="3">
+        <Flex align="center">
+          <FormLabel margin="0">Tech stack</FormLabel>
+          <Spacer h="10" />
+          <Button
+            onClick={appendInput}
+            bg="transparent"
+            size="md"
+            _hover={{ bg: "transparent" }}
+            padding="0"
+          >
+            <AddIcon />
+          </Button>
+        </Flex>
+
+        {fields.map((item, index) => (
+          <FormControl
+            key={item.id}
+            isInvalid={isError[`techStacks[${index}]`]}
+          >
+            <InputGroup>
+              <Input
+                placeholder="Enter tech stack"
+                ref={(el: HTMLInputElement) =>
+                  (techStackRefs.current[index] = el)
+                }
+                {...inputStyles}
+                onChange={() =>
+                  setIsError((prev: any) => ({
+                    ...prev,
+                    [`techStacks[${index}]`]: "",
+                  }))
+                }
+              />
+              {item?.isDeletable && (
+                <InputRightElement onClick={() => removeInput(index)}>
+                  <CloseIcon boxSize={3} />
+                </InputRightElement>
+              )}
+            </InputGroup>
+            <FormErrorMessage>
+              {isError[`techStacks[${index}]`] && (
+                <>{isError[`techStacks[${index}]`]}</>
+              )}
+            </FormErrorMessage>
+          </FormControl>
+        ))}
+      </Stack>
     </>
   );
 });

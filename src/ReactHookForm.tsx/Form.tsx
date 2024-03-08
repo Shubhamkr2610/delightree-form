@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Input,
   Container,
@@ -16,12 +17,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
-import { AddIcon, CloseIcon, TriangleDownIcon } from "@chakra-ui/icons";
+import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import FormDataDisplay from "./FormDataDisplay";
-import {genderOptions , inputStyles}  from '../constants'
+import { genderOptions, inputStyles } from "../constants";
+import { useEffect } from "react";
 const Form = () => {
-
   const [isLoading, setLoading] = useBoolean(false);
   const {
     register,
@@ -45,11 +46,11 @@ const Form = () => {
     }, 3000);
   };
 
-  // Initialize techStack with one item by default
-  if (fields.length === 0) {
-    append({ tech: "", deletable: false });
-  }
-
+  useEffect(() => {
+    if (fields.length === 0) {
+      append({ tech: "", deletable: false });
+    }
+  }, []);
 
   return (
     <>
@@ -71,7 +72,7 @@ const Form = () => {
             Basic Details
           </Text>
           <Flex gap="6">
-            <FormControl isInvalid={errors.firstName}>
+            <FormControl isInvalid={!!errors?.firstName}>
               <FormLabel>First Name</FormLabel>
               <Input
                 {...register("firstName", {
@@ -81,10 +82,10 @@ const Form = () => {
                 {...inputStyles}
               />
               <FormErrorMessage>
-                {errors.firstName && errors.firstName.message}
+              {errors?.firstName ? errors?.firstName.message : null}
               </FormErrorMessage>
             </FormControl>
-            <FormControl isInvalid={errors.lastName}>
+            <FormControl isInvalid={!!errors?.lastName}>
               <FormLabel>Last Name</FormLabel>
               <Input
                 {...register("lastName", { required: "Last Name is required" })}
@@ -97,7 +98,7 @@ const Form = () => {
             </FormControl>
           </Flex>
           <Flex gap="6">
-            <FormControl isInvalid={errors.mobileNumber}>
+            <FormControl isInvalid={!!errors.mobileNumber}>
               <FormLabel>Mobile Number</FormLabel>
               <InputGroup>
                 <InputLeftElement
@@ -125,7 +126,7 @@ const Form = () => {
                 {errors.mobileNumber && errors.mobileNumber.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl isInvalid={errors.email}>
+            <FormControl isInvalid={!!errors.email}>
               <FormLabel>Email</FormLabel>
               <Input
                 type="email"
@@ -140,7 +141,7 @@ const Form = () => {
                 {...inputStyles}
               />
               <FormErrorMessage>
-                {errors.email && errors.email.message}
+                {errors?.email && errors?.email?.message}
               </FormErrorMessage>
             </FormControl>
           </Flex>
@@ -167,15 +168,13 @@ const Form = () => {
                     value={value}
                     options={genderOptions}
                     placeholder="Select Gender"
-                    components={{ IndicatorSeparator: () => null }} // Remove the default indicator separator
-                    icon={<TriangleDownIcon />} // Set custom icon
                   />
 
                   <FormErrorMessage>{error && error.message}</FormErrorMessage>
                 </FormControl>
               )}
             />
-            <FormControl isInvalid={errors.dateOfBirth}>
+            <FormControl isInvalid={!!errors.dateOfBirth}>
               <FormLabel htmlFor="birthday">Date of Birth</FormLabel>
               <input
                 type="date"
@@ -215,7 +214,7 @@ const Form = () => {
             </Flex>
 
             {fields.map((item, index) => (
-              <FormControl key={item.id} isInvalid={errors.techStack}>
+              <FormControl key={item.id} isInvalid={!!errors.techStack}>
                 <InputGroup>
                   <Input
                     placeholder="Enter tech stack"
