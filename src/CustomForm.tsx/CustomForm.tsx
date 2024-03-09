@@ -9,6 +9,7 @@ import {
   Text,
   useBoolean,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const CustomForm = () => {
   const [showData, setShowData] = useState(false);
@@ -75,6 +76,11 @@ const CustomForm = () => {
           User Details
         </Text>
       </Center>
+      <Flex justifyContent="flex-end">
+        <Link to="/form-by-using-inBuilt-hook">
+          Check form built react hook ➡️
+        </Link>
+      </Flex>
       <Container
         maxW="50%"
         bg="brand.primary"

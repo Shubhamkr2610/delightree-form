@@ -22,6 +22,7 @@ import { Controller, useFieldArray, useForm } from "react-hook-form";
 import FormDataDisplay from "./FormDataDisplay";
 import { genderOptions, inputStyles } from "../constants";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 const Form = () => {
   const [isLoading, setLoading] = useBoolean(false);
   const {
@@ -59,6 +60,9 @@ const Form = () => {
           User Details
         </Text>
       </Center>
+      <Flex justifyContent="flex-end">
+        <Link to="/"> Check custom form ➡️</Link>
+      </Flex>
       <Container
         maxW="50%"
         bg="brand.primary"
