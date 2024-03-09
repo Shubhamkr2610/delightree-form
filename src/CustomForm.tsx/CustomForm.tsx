@@ -23,7 +23,7 @@ const CustomForm = () => {
         errorCount = +1;
         formRef?.current?.setError(
           `techStacks[${index}]`,
-          "Input Can't be blank"
+          "Tech Stack is required"
         );
       }
     });
@@ -35,27 +35,27 @@ const CustomForm = () => {
     setShowData(false);
     const formData = formRef?.current?.getFormData();
     if (!formData.firstName) {
-      formRef?.current?.setError("firstName", "First Name can't be blank");
+      formRef?.current?.setError("firstName", "First Name is required");
       totalErrorCount++;
     }
     if (!formData.lastName) {
-      formRef?.current?.setError("lastName", "Last Name  can't be blank");
+      formRef?.current?.setError("lastName", "Last Name is required");
       totalErrorCount++;
     }
     if (!formData.email) {
-      formRef?.current?.setError("email", "Email can't be blank");
+      formRef?.current?.setError("email", "Email is required");
       totalErrorCount++;
     }
     if (!formData.phone) {
-      formRef?.current?.setError("phone", "Phone can't be blank");
+      formRef?.current?.setError("phone", "Mobile Number is required");
       totalErrorCount++;
     }
     if (!formData.dateOfBirth) {
-      formRef?.current?.setError("dateOfBirth", "Date Of Birth can't be blank");
+      formRef?.current?.setError("dateOfBirth", "Date Of Birth is required");
       totalErrorCount++;
     }
     if (!formData.gender) {
-      formRef?.current?.setError("gender", "Gender can't be blank");
+      formRef?.current?.setError("gender", "Select atLeast one Gender");
       totalErrorCount++;
     }
     if (formData?.techStacks?.length > 0) {

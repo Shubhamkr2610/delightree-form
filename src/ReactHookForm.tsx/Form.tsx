@@ -156,7 +156,7 @@ const Form = () => {
             <Controller
               control={control}
               name="gender"
-              rules={{ required: "Please enter at least one food group." }}
+              rules={{ required: "Select atLeast one Gender." }}
               render={({
                 field: { onChange, onBlur, value, name, ref },
                 fieldState: { error },
@@ -223,7 +223,7 @@ const Form = () => {
                   <Input
                     placeholder="Enter tech stack"
                     {...register(`techStack.${index}.tech`, {
-                      required: "tech Stack is required",
+                      required: "Tech Stack is required",
                     })}
                     {...inputStyles}
                   />
