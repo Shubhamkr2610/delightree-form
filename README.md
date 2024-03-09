@@ -1,30 +1,12 @@
-# React + TypeScript + Vite
+ ## [Custom Form Component](https://delightree-form.vercel.app/)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a custom form component built using React, Chakra UI, and TypeScript. It includes fields for first name, last name, mobile number, email address, gender selection, date of birth, and a dynamic tech stack field.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Input fields for first name, last name, mobile number, email address, gender selection, and date of birth.
+- Dynamic tech stack fields allowing users to add and delete tech stacks.
+- Form validation for all fields(All field are required).
+- Manual submission using a submit button, with data appearing after 3 seconds if there are no errors in the form.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+![image](https://github.com/Shubhamkr2610/delightree-form/assets/91511639/ff06d298-214c-4e92-8dd9-29d3120a37f7)
