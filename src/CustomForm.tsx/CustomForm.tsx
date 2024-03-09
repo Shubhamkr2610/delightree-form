@@ -78,7 +78,7 @@ const CustomForm = () => {
       </Center>
       <Flex justifyContent="flex-end">
         <Link to="/form-by-using-inBuilt-hook">
-          Check form built react hook ➡️
+          Check form built using react hook ➡️
         </Link>
       </Flex>
       <Container
